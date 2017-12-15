@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
-import { View, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { View, KeyboardAvoidingView, Keyboard, LayoutAnimation } from 'react-native';
 import { connect } from 'react-redux'
 import { firstPhoneChange, sendCodeSubmit } from '../actions';
 import { FormLabel, FormInput, Button } from 'react-native-elements';
 import Spinner from './common/Spinner';
 
 class GetCode extends Component {
+    componentDidUpdate(){
+        LayoutAnimation.spring();
+    }
     phoneChage(value) {
         this.props.firstPhoneChange(value)
         console.log('logging phone: ', this.props.firstPhoneChange(value));
@@ -39,7 +42,7 @@ class GetCode extends Component {
     }
     render() {
         return (
-            <View>
+            <View style={{ flex: 1, justifyContent: 'center' }}>
                 {this.renderComponent()}
             </View>
         )

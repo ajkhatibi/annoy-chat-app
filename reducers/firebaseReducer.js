@@ -1,7 +1,7 @@
 import { 
     FIRST_PHONE_CHANGE, 
     SUBMIT_CODE,
-    SUBMIT_SUCCESS 
+    SUBMIT_SUCCESS
 } from '../actions/types';
 
 const INITIAL_STATE = { phone: null, loading: false };
@@ -13,7 +13,7 @@ export default (state = INITIAL_STATE, action) => {
         case SUBMIT_CODE:
             return { ...state, loading: true };
         case SUBMIT_SUCCESS:
-            return { ...state, INITIAL_STATE };
+            return { ...state, loading: false };
         default: 
             return state;
     }

@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import ReduxThunk from 'redux-thunk';
 import reducers from './reducers';
-import GetCode from './components/GetCode';
+import RouterComponents from './components/RouterComponents';
 
 export default class App extends React.Component {
   render() {
@@ -12,7 +12,7 @@ export default class App extends React.Component {
     return (
       <Provider store={reduxStore} >
         <View style={styles.container}>
-            <GetCode />
+            <RouterComponents />
         </View>
       </Provider>
     );
