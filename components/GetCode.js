@@ -14,7 +14,6 @@ class GetCode extends Component {
         const { phone } = this.props;
         Keyboard.dismiss();
         this.props.sendCodeSubmit({ phone })
-        console.log('logging button:', phone);
     }
     renderComponent() {
         if (this.props.loading) {
