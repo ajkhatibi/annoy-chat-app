@@ -7,12 +7,16 @@ import {
     LayoutAnimation,
     Keyboard
  } from 'react-native';
- import { checkCodeComponent } from '../actions';
+ import { checkCodeComponent, checkCodeWithFirebase, firstPhoneChange } from '../actions';
  import Spinner from './common/Spinner';
  
 class SubmitCode extends Component {
-    componentDidUpdate() {
-        LayoutAnimation.spring();
+    onChangeCode(value) {
+        this.props.checkCodeComponent(value);
+    }
+    onButtonPress() {
+        Keyboard.dismiss();
+        this.props.checkCodeWithFirebase({ value: this.props.checkCode, phone: this.props.phone });
     }
     renderComponent() {
         if (this.props.loading) {
@@ -25,10 +29,12 @@ class SubmitCode extends Component {
                     <FormInput
                     keyboardType='numeric' 
                     placeholder='****' 
+                    onChangeText={this.onChangeCode.bind(this)}
+                    value={this.props.checkCode}
                     />
                 </View>
                 <View>
-                    <Button title='Verify' />
+                    <Button title='Verify' onPress={this.onButtonPress.bind(this)} />
                 </View>
             </KeyboardAvoidingView>
         );
@@ -46,8 +52,13 @@ class SubmitCode extends Component {
 const mapStateToProps = (state) => {
     return {
         checkCode: state.checkCodeReducer.code,
-        loading: state.checkCodeReducer.loading
+        loading: state.checkCodeReducer.loading,
+        phone: state.firebaseReducer.phone
     };
 };
 
-export default connect(mapStateToProps, { checkCodeComponent })(SubmitCode);
+export default connect(mapStateToProps, { 
+    checkCodeComponent, 
+    checkCodeWithFirebase,
+    firstPhoneChange 
+})(SubmitCode);
