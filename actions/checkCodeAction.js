@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Actions } from 'react-native-router-flux';
+import firebase from 'firebase';
 import { TYPING_CODE, CHECKING_CODE, CODE_SUCCESS } from './types';
 
 export const checkCodeComponent = (value) => {
@@ -14,9 +15,10 @@ export const checkCodeWithFirebase = ({ value, phone }) => {
         dispatch({ type: CHECKING_CODE });
         console.log('actions submit code: ', value, phone);
         axios.post('https://us-central1-one-time-password-c4408.cloudfunctions.net/verifyOneTimePassword', { phone, code: value })
-            .then(() => {
+            .then((response) => {
                 dispatch({ type: CODE_SUCCESS });
-                Actions.homePage({ type: 'reset' });
+                firebase.auth().signInWithCustomToken(response.data.token);
+                Actions.homePage();
             })
             .catch(() => {
                 console.log('there was an error');

@@ -17,12 +17,19 @@ export const sendCodeSubmit = ({ phone }) => {
     return (dispatch) => {
         dispatch({ type: SUBMIT_CODE });
         console.log('logging actions for submit: ', phone);
-            console.log('axios post success', phone);
-            axios.post('https://us-central1-one-time-password-c4408.cloudfunctions.net/requestOneTimePassword', { phone })
+            axios.post('https://us-central1-one-time-password-c4408.cloudfunctions.net/createUser', {
+                phone
+            })
             .then(() => {
+                console.log('axios post success', phone);
+                axios.post('https://us-central1-one-time-password-c4408.cloudfunctions.net/requestOneTimePassword', { phone })
+                .then(() => {
                 dispatch({ type: SUBMIT_SUCCESS });
                 Actions.pageTwo();
-            }).catch(error => console.log('error on second post: ', phone, error));
+                }).catch(error => console.log('error on second post: ', phone, error));
+            }).catch(() => {
+                console.log('error handling create user: ');
+            });
     };
 };
 
