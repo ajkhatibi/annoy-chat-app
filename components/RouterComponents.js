@@ -8,8 +8,8 @@ export default RouterComponents = () => {
     return (
         <Router>
             <Scene key='root'>
-                <Scene key='pageOne' component={GetCode} hideNavBar={true} />
-                <Scene key='pageTwo' component={SubmitCode} hideNavBar={true} />
+                <Scene key='pageOne' component={GetCode} hideNavBar initial />
+                <Scene key='pageTwo' component={SubmitCode} hideNavBar />
                 <Scene key='homePage' component={HomePage} title='Get To Chatting!' />
             </Scene>
         </Router>

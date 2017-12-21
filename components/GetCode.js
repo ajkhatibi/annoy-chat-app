@@ -1,11 +1,26 @@
+import _ from 'lodash';
 import React, { Component } from 'react';
-import { View, KeyboardAvoidingView, Keyboard, LayoutAnimation } from 'react-native';
+import { View, KeyboardAvoidingView, Keyboard, AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
-import { firstPhoneChange, sendCodeSubmit } from '../actions';
+import { Actions } from 'react-native-router-flux';
+import { AppLoading } from 'expo';
 import { FormLabel, FormInput, Button } from 'react-native-elements';
 import Spinner from './common/Spinner';
+import { firstPhoneChange, sendCodeSubmit } from '../actions';
 
 class GetCode extends Component {
+    state = {
+        token: null
+    }
+    async componentWillMount() {
+        let token = await AsyncStorage.getItem('token');
+        if (token) {
+            this.setState({ token: true });
+            Actions.homePage({ type: 'reset' });
+        } else {
+            this.setState({ token: false });
+        }
+    }
     onButtonPress() {
         const { phone } = this.props;
         Keyboard.dismiss();
@@ -16,7 +31,9 @@ class GetCode extends Component {
         console.log('logging phone: ', this.props.firstPhoneChange(value));
     }
     renderComponent() {
-        if (this.props.loading) {
+        if (_.isNull(this.state.token)){
+            return <AppLoading />;
+        } else if (this.props.loading) {
             return <Spinner size='large' />;
         } else {
             return (
