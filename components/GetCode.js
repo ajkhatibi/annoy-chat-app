@@ -13,7 +13,7 @@ class GetCode extends Component {
         token: null
     }
     async componentWillMount() {
-        let token = await AsyncStorage.getItem('token');
+        const token = await AsyncStorage.getItem('token');
         if (token) {
             this.setState({ token: true });
             Actions.homePage({ type: 'reset' });
@@ -31,7 +31,7 @@ class GetCode extends Component {
         console.log('logging phone: ', this.props.firstPhoneChange(value));
     }
     renderComponent() {
-        if (_.isNull(this.state.token)){
+        if (_.isNull(this.state.token)) {
             return <AppLoading />;
         } else if (this.props.loading) {
             return <Spinner size='large' />;

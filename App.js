@@ -1,11 +1,13 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Notifications } from 'expo';
+import { StyleSheet, View, Alert } from 'react-native';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import ReduxThunk from 'redux-thunk';
 import firebase from 'firebase';
 import reducers from './reducers';
 import RouterComponents from './components/RouterComponents';
+import registerForPush from './services/pushNotification';
 
 export default class App extends React.Component {
   componentDidMount() {
@@ -18,6 +20,17 @@ export default class App extends React.Component {
       messagingSenderId: '354512024134'
     };
     firebase.initializeApp(config);
+    registerForPush();
+    Notifications.addListener(() => {
+      const { data: { text }, origin } = Notifications;
+      if (origin === 'received' && text) {
+        Alert.alert(
+          'New Notification',
+          text,
+          [{ text: 'ok.' }]
+        );
+      }
+    });
   }
   render() {
     const reduxStore = createStore(reducers, {}, applyMiddleware(ReduxThunk));
